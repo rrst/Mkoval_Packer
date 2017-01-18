@@ -1,0 +1,86 @@
+{
+  "builders": [
+    {
+      "type": "vmware-iso",
+	  "vm_name": "{{user `vm_name`}}",
+	  "output_directory": "{{user `vm_name`}}",
+	  
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+	  
+      "headless": false,
+      "boot_wait": "2m",
+	  
+	  "remote_host": "192.168.64.126",
+	  "remote_datastore": "vmdatastore",
+      "remote_username": "root",
+      "remote_password": "raid4us!",
+      "remote_type": "esx5",
+	  
+      "ssh_username": "Administrator",
+      "ssh_password": "raid4us!",
+	  "ssh_port": 22,
+	  "ssh_wait_timeout": "10h",
+	  
+      "shutdown_command": "shutdown /s /t 10 /f ",
+      "guest_os_type": "windows7srv-64",
+	  
+	  "keep_registered": true,
+	  
+      "disk_size": 61440,
+	  "disk_type_id": "thin",
+	  
+      "vnc_port_min": 5900,
+      "vnc_port_max": 9999,
+      "floppy_files": [
+        "{{user `autounattend`}}",
+        "./scripts/microsoft-updates.bat",
+        "./scripts/win-updates.ps1",
+		"./scripts/vm-guest-tools.bat",
+		"./scripts/mountshare.ps1",
+		"./scripts/mountshare.bat",
+		"./scripts/openssh.ps1",
+		"./scripts/vagrant.pub",
+		"./scripts/agentinstalletion.ps1"
+      ],
+      "boot_wait": "1m",
+      "vmx_data": {
+        "ethernet0.networkName": "VM Network",
+        "memsize": "4096",
+        "numvcpus": "2",
+        "cpuid.coresPerSocket": "2",
+		"scsi0.virtualDev": "lsisas1068",
+        "scsi0.present": "TRUE",
+		"scsi0:0.fileName": "disk.vmdk",
+		"scsi0:0.deviceType": "scsi-hardDisk"
+      }
+    }
+  ],
+    "provisioners": [
+    {
+      "type": "shell",
+      "remote_path": "C:/Windows/Temp/script.bat",
+      "execute_command": "{{.Vars}} cmd /c C:/Windows/Temp/script.bat",
+      "scripts": [
+        "./scripts/vm-guest-tools.bat",
+        "./scripts/disable-auto-logon.bat",
+        "./scripts/enable-rdp.bat",
+        "./scripts/compile-dotnet-assemblies.bat",
+		"./scripts/mountshare.bat",
+		"./scripts/firewalloff.bat",
+		"./scripts/pw5install.bat",
+		"./scripts/vm-guest-tools.bat",
+		"./scripts/pushupdates.bat"
+      ]
+    }
+  ],
+  "variables": {
+    "iso_url": "C:/OS/en_windows_vista_enterprise_sp2_x64_dvd_342332.iso",
+    "iso_checksum_type": "md5",
+    "iso_checksum": "b7a3a65b6c45543e0b37c004997a7e25",
+    "autounattend": "./answer_files/2008/Autounattend.xml",
+	"vm_name": "Mkoval-vista",
+	"2gb_disk": "2048"
+  }
+}

@@ -1,0 +1,26 @@
+diskpart /s a:\diskmapping_server.txt
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,63 @@
+select disk 1
+online disk noerr
+attributes disk clear readonly
+create partition primary
+format fs=ntfs label="MBR Basic NTFS" quick
+assign letter=i
+
+select disk 2
+online disk noerr
+attributes disk clear readonly
+convert dynamic
+create volume simple
+format fs=ntfs label="MBR Dynamic NTFS" quick
+assign letter=j
+
+select disk 3
+online disk noerr
+attributes disk clear readonly
+create partition primary
+format fs=refs label="MBR Basic REFS" quick
+assign letter=K
+
+select disk 4
+online disk noerr
+attributes disk clear readonly
+convert dynamic
+create volume simple
+format fs=refs label="MBR Dynamic REFS" quick
+assign letter=l
+
+select disk 5
+online disk noerr
+attributes disk clear readonly
+convert GPT
+create partition primary
+format fs=ntfs label="GPT Basic NTFS" quick
+assign letter=m
+
+select disk 6
+online disk noerr
+attributes disk clear readonly
+convert GPT
+convert dynamic
+create volume simple
+format fs=ntfs label="GPT Dynamic NTFS" quick
+assign letter=n
+
+select disk 7
+online disk noerr
+attributes disk clear readonly
+convert GPT
+create partition primary
+format fs=refs label="GPT Basic REFS" quick
+assign letter=o
+
+select disk 8
+online disk noerr
+attributes disk clear readonly
+convert GPT
+convert dynamic
+create volume simple
+format fs=refs label="GPT Dynamic REFS" quick
+assign letter=p
